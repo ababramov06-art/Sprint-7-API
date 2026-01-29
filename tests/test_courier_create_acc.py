@@ -10,13 +10,8 @@ class TestCourierCreate:
 
     @allure.title('Проверка успешного создания аккаунта курьера с валидными данными')
     @allure.description('Happy path. Проверяются код и тело ответа.')
-    def test_create_courier_account_success(self):
-        payload = {
-            'login': create_random_login(),
-            'password': create_random_password(),
-            'firstName': create_random_firstname()
-        }
-        response = requests.post(Urls.URL_courier_create, data=payload)
+    def test_create_courier_account_success(self, generate_create_data):
+        response = requests.post(Urls.URL_courier_create, data = generate_create_data)
         assert response.status_code == 201 and response.json() == {'ok': True}
 
     @allure.title('Проверка получения ошибки при повторном использовании логина для создания курьера')
@@ -29,6 +24,7 @@ class TestCourierCreate:
         }
         response = requests.post(Urls.URL_courier_create, data=payload)
         assert response.status_code == 409 and response.json() == {'message': 'Этот логин уже используется'}
+
     @allure.title('Проверка получения ошибки при создании курьера с незаполненными обязательными полями')
     @allure.description('В тест передаются наборы данных с пустым логином и с пустым паролем. '
                         'Проверяются код и тело ответа.')

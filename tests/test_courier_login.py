@@ -26,7 +26,7 @@ class TestCourierLogin:
         assert response.status_code == 404 and response.json() == {'message': 'Учетная запись не найдена'}
 
     @allure.title('Проверка получения ошибки аутентификации курьера с пустым полем логина или пароля')
-    @allure.description('В тест по очереди передаются наборы данных с пустым логином или паролем. '
+    @allure.description('Выполняем тест с пустым логином. Выполняем тест с пустым паролем. '
                         'Проверяются код и тело ответа.')
     @pytest.mark.parametrize('empty_credentials', [
         {'login': '', 'password': create_random_password()},
