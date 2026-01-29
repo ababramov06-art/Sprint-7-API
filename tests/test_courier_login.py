@@ -11,6 +11,7 @@ class TestCourierLogin:
     @allure.title('Проверка успешной аутентификации курьера при вводе валидных данных')
     @allure.description('Happy path. Проверяются код и тело ответа.')
     def test_courier_login_success(self):
+        allure.step('Аутентификация курьера.')
         response = requests.post(Urls.URL_courier_login, data=Data.valid_courier_data)
         assert response.status_code == 200 and 'id' in response.text
 
@@ -22,6 +23,7 @@ class TestCourierLogin:
         Data.courier_data_with_wrong_password
     ])
     def test_courier_login_nonexistent_data_not_found(self, nonexistent_credentials):
+        allure.step('Ошибка аутентификации курьера.')
         response = requests.post(Urls.URL_courier_login, data=nonexistent_credentials)
         assert response.status_code == 404 and response.json() == {'message': 'Учетная запись не найдена'}
 
@@ -33,5 +35,6 @@ class TestCourierLogin:
         {'login': Data.valid_login, 'password': ''}
     ])
     def test_courier_login_empty_credentials_bad_request(self, empty_credentials):
+        allure.step('Ошибка аутентификации курьера.')
         response = requests.post(Urls.URL_courier_login, data=empty_credentials)
         assert response.status_code == 400 and response.json() == {'message': 'Недостаточно данных для входа'}

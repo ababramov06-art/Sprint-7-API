@@ -11,6 +11,7 @@ class TestCourierCreate:
     @allure.title('Проверка успешного создания аккаунта курьера с валидными данными')
     @allure.description('Happy path. Проверяются код и тело ответа.')
     def test_create_courier_account_success(self, generate_create_data):
+        allure.step('Создаём курьера.')
         response = requests.post(Urls.URL_courier_create, data = generate_create_data)
         assert response.status_code == 201 and response.json() == {'ok': True}
 
@@ -22,6 +23,7 @@ class TestCourierCreate:
             'password': create_random_password(),
             'firstName': create_random_firstname()
         }
+        allure.step('Пытаемся создать курьера.')
         response = requests.post(Urls.URL_courier_create, data=payload)
         assert response.status_code == 409 and response.json() == {'message': 'Этот логин уже используется'}
 
@@ -33,6 +35,7 @@ class TestCourierCreate:
         {'login': create_random_login(), 'password': '', 'firstName': create_random_firstname()}
     ])
     def test_create_courier_account_with_empty_required_fields(self, empty_credentials):
+        allure.step('Пытаемся создать курьера.')
         response = requests.post(Urls.URL_courier_create, data=empty_credentials)
         assert response.status_code == 400 and response.json() == {'message': 'Недостаточно данных для создания '
                                                                               'учетной записи'}
